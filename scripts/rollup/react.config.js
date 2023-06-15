@@ -1,4 +1,5 @@
 import { resolvePkgPath, getPackageJson, getBaseRollPlugins } from './utils';
+import generatePackageJson from 'rollup-plugin-generate-package-json';
 
 const { module, name } = getPackageJson('react');
 const reactPkgPath = resolvePkgPath(name);
@@ -13,7 +14,22 @@ export default [
 			name: 'index.js',
 			format: 'umd'
 		},
-		plugins: getBaseRollPlugins()
+		plugins: [
+			...getBaseRollPlugins(),
+			generatePackageJson({
+				inputFolder: reactPkgPath,
+				outputFolder: reactPkgDisPath,
+				baseContents: (pkg) => {
+					const { name, description, version } = pkg;
+					return {
+						name,
+						description,
+						main: 'index.js',
+						version
+					};
+				}
+			})
+		]
 	},
 	{
 		input: `${reactPkgPath}/src/jsx.ts`,
