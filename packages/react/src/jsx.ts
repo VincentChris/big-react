@@ -80,4 +80,4 @@ export function createElement(
 	}
 	return ReactElement(type, key, ref, props);
 }
-export const jsxDev = jsx;
+export const jsxDEV = jsx;
